@@ -1,0 +1,109 @@
+{% extends "inventory/base.html" %}
+
+
+{% block body %}
+<h3 class="m-4">All Items</h3>
+<div class="row">
+    <div class="col-12">
+        {% if inventory %}
+            <div class="ms-4 me-4 card border-dark mb-4">
+                <div class="card-header">
+                    <i class="fa-lg fa-solid fa-list"></i> Inventory Items
+
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                  <tr class="table-secondary">
+                                    <th scope="col">Component</th>
+                                    <th scope="col">Lot #</th>
+                                    <th scope="col">Expiration Date</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in inventory %}
+                                        <tr class="table-secondary">
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.lot_number }}</td>
+                                            <td>{{ item.expiration_date }}</td>
+                                            <td>
+                                                <button href="{% url 'view_item' item.id %}" data-bs-toggle="modal" data-bs-target="#mymodal{{inventory.id}}" type="button" class="btn me-1 btn-success"><i class="fa-lg fa-solid fa-circle-info"></i></button>
+
+                                                <!-- Modal - View Student -->
+                                                <div class="modal" id="mymodal{{inventory.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">Component: {{ item.name }}</h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          <ul class="list-unstyled">
+                                                            <li>Component lot #: <strong>{{ item.lot_number }}</strong></li>
+                                                            <li>Expiration Date: <strong>{{ item.expiration_date }}</strong></li>
+                                                          </ul>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                <!-- End Modal - View Student -->
+                                                <a class="btn btn-warning me-1" href="{% url 'edit' item.id %}"><i class="fa-lg fa-regular fa-pen-to-square"></i></a>
+
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{inventory.id}}"><i class="fa-lg fa-solid fa-trash-can"></i></button>
+                                                <!-- Modal - Delete Student -->
+                                                <div class="modal" id="delete{{inventory.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">Component: {{ item.name }}</h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          <p>Are you sure you want to delete {{item.name}}?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form action="{% url 'delete' item.id %}" method="post">
+                                                                {% csrf_token %}
+                                                                <button type="submit" class="btn btn-danger">Delete</button>
+
+                                                            </form>
+                                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                <!-- End Modal - Delete Student -->
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                              </table>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">
+                No items found
+            </div>
+        {% endif %}
+        
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
