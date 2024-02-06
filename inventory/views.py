@@ -47,6 +47,6 @@ def delete_item(request, id):
     if request.method == 'POST':
         item = Inventory.objects.get(pk=id)
         item.delete()
-    return HttpResponse(reverse('index'))
+        return render(request, 'inventory/index.html', {'inventory': Inventory.objects.all()})
 
 
